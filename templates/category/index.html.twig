@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categorias!
+{% endblock %}
+
+{% block body %}
+	<div class="bg-body-tertiary p-5 rounded">
+		{% if data == null %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+				<strong>Não há categorias cadastradas!</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% else %}
+			<h1>Produtos</h1>
+			<br>
+			<div class="table-responsive">
+				<table>
+					<thead>
+						<th>
+							Nome da categoria
+						</th>
+					</thead>
+					<tbody>
+						<tr>
+							{% for datas in data %}
+								<td>{{ datas.name }}</td>
+							{% endfor %}
+						</tr>
+						<tr></tr>
+					</tbody>
+				</table>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}

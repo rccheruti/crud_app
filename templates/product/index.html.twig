@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produtos
+{% endblock %}
+
+{% block body %}
+	<div class="bg-body-tertiary p-5 rounded">
+    {% if data == null %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+				<strong>Não há produtos cadastrados!</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% else %}
+		<h1>Produtos</h1>
+		<br>
+		<div class="table-responsive">
+			<table class="table table-striped table-hover">
+				<thead>
+					<th scope="col">Nome do produto</th>
+					<th scope="col">Quantidade em estoque</th>
+					<th scope="col">Preço</th>
+                    <th scope="col">Ações</th>
+				</thead>
+				<tbody>
+					<tr>
+						{% for datas in data %}
+							<td>{{ datas.name }}
+							</td>
+							<td>{{ datas.quantity }}
+							</td>
+							<td>{{ datas.price }}
+							</td>
+                            <td>
+                            <a class="btn btn-primary" href="{{ path('app_product_update', {id: datas.id} )}}"><i class="bi bi-pencil-square"></i></a>
+                            <a class="btn btn-danger" href="{{ path('app_product_delete', {id: datas.id} )}}"><i class="bi bi-trash"></i></a>
+                            </td>
+						{% endfor %}
+					</tr>
+				</tbody>
+			</table>
+		</div>
+        {% endif %}
+	</div>
+{% endblock %}
