@@ -20,7 +20,6 @@ class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // dd($options);
         $builder
             ->add('name', TextType::class)
             ->add('price', NumberType::class)
