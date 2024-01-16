@@ -29,7 +29,7 @@ php bin/console make:migration
 ```sh
 php bin/console doctrine:migrations:migrate
 ```
-Pronto, agora só rodar o servidor so Symfony:
+Pronto, agora só rodar o servidor do Symfony:
 ```sh
 php bin/console serve
 ```
