@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	{{ titulo }}
+{% endblock %}
+{% block body %}
+	<main class="container">
+		<div class="bg-body-tertiary p-5 rounded">
+			{{ form_start(form) }}
+			<div class="my-custom-class-for-errors">
+				{{ form_errors(form) }}
+			</div>
+			<div class="row mb-16">
+				<div class="col">
+					{{ form_row(form.name, {'attr':{'class':'form-control mt-08'}, 'label' : 'Nome do produto'}) }}
+				</div>
+			</div>
+			<div class="row mb-16">
+				<div class="col">
+					{{ form_row(form.price, {'attr':{'class':'form-control mt-08'}, 'label' : 'Preço'}) }}
+				</div>
+			</div>
+			<div class="row mb-16">
+				<div class="col">
+					{{ form_row(form.quantity, {'attr':{'class':'form-control mt-08'}, 'label' : 'Quantidade'}) }}
+				</div>
+			</div>
+			<div class="row mb-16">
+				<div class="col">
+					{{ form_row(form.category, {'attr':{'class':'form-control mt-08'}, 'label' : 'Categoria'}) }}
+				</div>
+			</div>
+			<div class="d-flex p-2 align-items-center justify-content-between">
+				<div class="d-flex">
+					{{ form_row(form.cadastrar, {'attr':{'class':'btn btn-primary'}}) }}
+				</div>
+				<div class="d-flex">
+					<a href="{{path('app_product')}}" class="btn btn-danger mt-08" type="button">Cancelar</a>
+				</div>
+			</div>
+			{{ form_end(form) }}
+		</div>
+	</main>
+{% endblock %}

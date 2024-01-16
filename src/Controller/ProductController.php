@@ -2,12 +2,18 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 use App\Entity\Product;
+use App\Entity\Category;
+
 use App\Repository\ProductRepository;
+use App\Form\ProductType;
 
 class ProductController extends AbstractController
 {
@@ -25,26 +31,67 @@ class ProductController extends AbstractController
     }
 
     /**
-     *  @Route("/product/new", name="app_product_new")
+     *  @Route("/product/new", name="app_product_add")
      */
-    public function create(): Response
+    public function add(Request $request, EntityManagerInterface $em): Response
     {
-        return $this->render('product/register.html.twig');
+        $product = new Product;
+
+        $form = $this->createForm(ProductType::class, $product);
+
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('app_product', array('id' => $product->getId())));
+        }
+
+        return $this->renderForm(
+            'product/form.html.twig',
+            [
+                'titulo' => 'Cadastro de produtos',
+                'form' => $form
+            ]
+        );
     }
 
     /**
-     * @route("/product/update/{id}", name="app_product_update", methods={"GET","PUT"})
+     * @route("/product/update/{id}", name="app_product_update")
      */
-    public function update(ProductRepository $productRepository, $id): Response
+    public function update(Request $request, EntityManagerInterface $em, ProductRepository $productRepository, $id): Response
     {
-        return $this->json(['message' => 'update ok', 'id' => $id]);
+        $product = $productRepository->find($id);
+
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('app_product', array('id' => $product->getId())));
+
+        }
+
+        return $this->renderForm(
+            'product/form.html.twig',
+            [
+                'titulo' => 'Cadastro de produtos',
+                'form' => $form
+            ]
+        );
     }
 
-      /**
+    /**
      * @route("/product/delete/{id}", name="app_product_delete")
      */
-    public function delete(ProductRepository $productRepository, $id): Response
+    public function delete(ProductRepository $productRepository, $id, EntityManagerInterface $em): Response
     {
-        return $this->json(['message' => 'delete ok', 'id' => $id]);
+        $product = $productRepository->find($id);
+        $em->remove($product);
+        $em->flush();
+        return $this->redirectToRoute('app_product');
     }
 }
